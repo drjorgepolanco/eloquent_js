@@ -15,19 +15,18 @@
   // if / else
   var theNumber = prompt('pick a number');
   if (!isNaN(theNumber))
-    alert('your number is the square root of ' + 
-    	theNumber * theNumber);
+    alert('your number is the square root of ' + theNumber * theNumber);
   else
-  	alert('Hey! I need a number!');
+    alert('Hey! I need a number!');
   
   // if / else if / else
   var num = prompt('pick a number', '0');
   if (num < 10)
-  	alert('small');
+    alert('small');
   else if (num < 100)
-  	alert('medium');
+    alert('medium');
   else
-  	alert('large')
+    alert('large')
 
 
   // While and Do Loops
@@ -36,7 +35,7 @@
   // while loop
   var number = 0;
   while (number <= 12) {
-  	console.log(number);
+    console.log(number);
     number += 2;
   };
   
@@ -44,7 +43,7 @@
   // always executes its body at least once, and starts testing
   // whether it should stop only after that first execution
   do {
-  	var name = prompt('Who are you?');
+    var name = prompt('Who are you?');
   } while (!name);
   console.log(name);
 
@@ -54,20 +53,20 @@
 
   // for loops sample
   for (var number = 0; number <= 12; number = number + 2)
-  	console.log(number);
+    console.log(number);
   
   // computes 210, using for instead of while
   var result = 1;
   for (var counter = 0; counter < 10; counter += 1) {
-  	result *= 2;
+  result *= 2;
   };
   console.log(result);
 
   // the break statement
   for (var current = 20; ; current ++) {
-  	if (current % 7 == 0) {
-  		break;
-  	};
+    if (current % 7 == 0) {
+      break;
+    };
   };
   console.log(current);
 
@@ -76,19 +75,19 @@
   // ----------------------------------
 
   switch (prompt('What is the weather like?')) {
-  	case 'rainy':
-  	  console.log('Remember to bring an umbrella.');
-  	  break;
-  	case 'sunny':
-  	  console.log('Dress lightly.');
-  	  // not breaking allows to share the next code:
-  	  // logs('Dress lightly. Go outside.')
-  	case 'cloudy':
-  	  console.log('Go outside.');
-  	  break;
-  	default:
-  	  console.log('Unknown weather type!');
-  	  break;
+    case 'rainy':
+      console.log('Remember to bring an umbrella.');
+      break;
+      case 'sunny':
+      console.log('Dress lightly.');
+      // not breaking allows to share the next code:
+      // logs('Dress lightly. Go outside.')
+    case 'cloudy':
+      console.log('Go outside.');
+      break;
+    default:
+      console.log('Unknown weather type!');
+      break;
   };
 
   // ========= //
@@ -118,15 +117,15 @@
   // print "Fizz", divisible by 5, print "Buzz" and divisible by
   // 3 and 5, print "FizzBuzz"
   for (var i = 0; i <= 100; i += 1) {
-  	if (i % 3 === 0 && i % 5 == 0) {
-  		console.log('FizzBuzz');
-  	} else if (i % 3 === 0) {
-  		console.log('Fizz');
-  	} else if (i % 5 === 0) {
+    if (i % 3 === 0 && i % 5 == 0) {
+      console.log('FizzBuzz');
+    } else if (i % 3 === 0) {
+      console.log('Fizz');
+    } else if (i % 5 === 0) {
       console.log('Buzz');
-  	} else {
-  		console.log(i);
-  	}
+    } else {
+      console.log(i);
+    }
   };
 
   // Chess Board
@@ -147,14 +146,14 @@
   var chessBoard = '';
 
   for (var i = 0; i < size; i += 1) {
-  	for (var x = 0; x < size; x += 1) {
-  		if ((x + i) % 2 == 0) {
-  			chessBoard += ' ';
-  		} else {
-  			chessBoard += '#';
-  		}
-  	}
-  	chessBoard += "\n";
+    for (var x = 0; x < size; x += 1) {
+      if ((x + i) % 2 == 0) {
+        chessBoard += ' ';
+      } else {
+        chessBoard += '#';
+      }
+    }
+    chessBoard += "\n";
   };
   console.log(chessBoard);
 
