@@ -26,3 +26,8 @@ Licensed under a [Creative Commons attribution-noncommercial license](http://cre
 19. Project: A Paint Program
 20. Node.js
 21. Project: Skill-Sharing Website
+
+###About
+Each document or directory in this repository represents a Chapter of the book, identified with the same name. Not every single paragraph is represented but every relevant code is. Information left out of this workshop is because is too basic.
+
+**Each chapter ends with exercises that I resolved by myself, sometimes reading hints or googling.**
