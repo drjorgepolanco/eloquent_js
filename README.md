@@ -7,7 +7,7 @@ Licensed under a [Creative Commons attribution-noncommercial license](http://cre
 
 1. Values, Types and Operators
 2. [Program Structure](https://github.com/drjorgepolanco/eloquent_js/blob/master/program_structure.html)
-3. Functions
+3. [Functions](https://github.com/drjorgepolanco/eloquent_js/blob/master/functions.html)
 4. Data Structures: Objects and Arrays
 5. Higher-order Functions
 6. The Secret Life of Objects
