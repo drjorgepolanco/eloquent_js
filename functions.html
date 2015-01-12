@@ -1,0 +1,359 @@
+<html>
+<head>
+  <title>Functions</title>
+</head>
+<body>
+<script type="text/javascript">
+
+
+  // FUNCTIONS
+  // =========
+
+
+  // Defining a Function
+  // -------------------
+  
+  // no parameters
+  var makeNoise = function() {
+    console.log('Pling!');
+  };
+  makeNoise(); // -> Pling!
+
+  // // one parameter
+  var square = function(x) {
+    return x * x;
+  };
+  console.log(square(12)); // -> 144
+
+  // // two parameters
+  var power = function(base, exponent) {
+    var result = 1;
+    for (var count = 0; count < exponent; count ++) {
+      result *= base;
+    }
+    return result;
+  };
+  console.log(power(2, 10)); // -> 1024
+
+  
+  // Parameters and Scopes
+  // ---------------------
+  // Variables created inside of functions, including their parameters, are 
+  // local to them.
+
+  // example
+  var x = 'outside';
+
+  var f1 = function() {
+    var x = 'inside f1';
+  };
+  f1();
+  console.log(x); // -> outside
+
+  var f2 = function() {
+    x = "inside f2";
+  };
+  f2();
+  console.log(x); // -> inside f2
+
+
+  // Nested Scope
+  // ------------
+  // Functions can be created inside other functions, producing several degrees
+  // of locality.
+
+  var landscape = function() {
+    var result = '';
+    var flat = function(size) {
+      for (var count = 0; count < size; count ++) {
+        result += '_';
+      }
+    };
+    var mountain = function(size) {
+      result += '/';
+      for (var count = 0; count < size; count ++) {
+        result += "'";
+      }
+      result += '\\';
+    };
+    flat(3);
+    mountain(4);
+    flat(6);
+    mountain(1);
+    flat(1);
+    return result;            
+  };
+  console.log(landscape()); // -> ___/''''\______/'\_
+  /*
+    The flat and mountain functions can “see” the variable called result, since
+    they are inside the function that defines it. But they cannot see each 
+    other’s count variables since they are outside each other’s scope. The 
+    environment outside of the landscape function doesn’t see any of the
+    variables defined inside landscape.
+  */
+
+
+  // Functions as Values
+  // -------------------
+  // a variable that holds a function is still just a regular variable and can
+  // be assigned a new value:
+
+  var safeMode = 1;
+  var launchMissiles = function(value) {
+    missileSystem.launch('now');
+  };
+  if (safeMode) {
+    launchMissiles = function(value) {
+      console.log('not launched...');
+    }    
+  };
+
+
+  // Declaration Notation
+  // --------------------
+
+  function square(x) {
+    return x * x;    
+  };
+
+  // Function declarations are not part of the regular top-to-bottom flow of
+  // control -> This works even though the function is defined below the call.
+  console.log("The future says: ", future());
+  function future() {
+    return "We STILL have no flying cars.";    
+  }
+  // This is deprecated anyways!
+
+  // If you want your programs to behave consistently, only use this form of
+  // function-defining statements in the outermost block.
+  function example() {
+    function a() {};    // Ok!
+    if (something) {
+      function b() {};  // DANGER!!      
+    }    
+  };
+
+
+  // Optional Arguments
+  // ------------------
+  // Extra arguments are simply ignored in Javascript
+
+  function power(base, exponent) {
+    if (exponent == undefined) {
+      exponent = 2;
+    }
+    var result = 1;
+    for (var count = 0; count < exponent; count += 1) {
+      result *= base;      
+    }
+    return result;
+  };
+  console.log(power(4));    // -> 16
+  console.log(power(4, 3)); // -> 64
+
+
+  // Closure
+  // -------
+  // What happens to local variables when the function call that created them
+  // is no longer active? -> The variable can still be accessed.
+
+  // Closure is the ability to reference a specific instance of local variables
+  // in an enclosing function.
+  
+  function wrapValue(n) {
+    var localVariable = n;
+    return function() { return localVariable; };        
+  };
+  var wrap1 = wrapValue(1);
+  var wrap2 = wrapValue(2);
+  console.log(wrap1()); // -> 1
+  console.log(wrap2()); // -> 2
+
+  // With a slight change we can turn the previous example into a way to create
+  // functions that multiply by an arbitrary amount.
+  function multiplier(factor) {
+    return function(number) {
+      return number * factor;      
+    };    
+  };
+  var twice = multiplier(2);
+  console.log(twice(5)); // -> 10
+
+
+  // Recursion
+  // ---------
+  // A function that calls itself is called 'recursive'.
+
+  function power(base, exponent) {
+    if (exponent == 0) {
+      return 1;      
+    } else {
+      return base * power(base, exponent - 1);      
+    };
+  };
+  console.log(power(2, 3));
+
+  // A function that given a number, tries to find a sequence of adding to 5 or
+  // multiplying by 3 that produces the given number.
+  function findSolution(target) {
+    function find(start, history) {
+      if (start == target) {
+        return history;
+      } else if (start > target) {
+        return null;
+      } else {
+        return find(start + 5, "(" + history + " + 5)") ||
+               find(start * 3, "(" + history + " * 3)");
+      }
+    }
+    return find(1, "1"); 
+  };
+  console.log(findSolution(24)); // -> (((1 * 3) + 5) * 3)
+
+
+  // Growing Functions
+  // -----------------
+
+  // Write a program that prints two numbers, the numbers of cows and chickens
+  // on a farm, with the words Cows and Chickens after them, and zeroes padded
+  // before both number so that they are always three digits long.
+  // 007 Cows
+  // 011 Chickens
+
+  function printFarmInventory(cows, chickens, pigs) {
+    var cowString = String(cows);
+    while (cowString.length < 3) {
+      cowString = '0' + cowString;
+    };
+    console.log(cowString + ' Cows');
+    var chickenString = String(chickens);
+    while (chickenString.length < 3) {
+      chickenString = '0' + chickenString;
+    };
+    console.log(chickenString + ' Chickens');
+    var pigString = String(pigs);
+    while (pigString.length < 3) {
+      pigString = '0' + chickenString;
+    };
+    console.log(pigString + ' Pigs');
+  };
+  printFarmInventory(7, 11, 13);
+  // -> 007 Cows
+  // -> 011 Chickens
+  // -> 013 Pigs
+
+
+  // a better way
+  function printZeroPaddedWithLabel(number, label) {
+    var numberString = String(number);
+    while (numberString.length < 3) {
+      numberString = '0' + numberString;
+    };
+    console.log(numberString + ' ' + label)
+  };
+
+  function printFarmInventory(cows, chickens, pigs) {
+    printZeroPaddedWithLabel(cows, " Cows");
+    printZeroPaddedWithLabel(chickens, " Chickens");
+    printZeroPaddedWithLabel(pigs, " Pigs");
+  };
+
+  printFarmInventory(7, 11, 13);
+  // -> 007 Cows
+  // -> 011 Chickens
+  // -> 013 Pigs
+
+
+  // the best way
+  function zeroPad(number, width) {
+    var string = String(number);
+    while (string.length < width) {
+      string = '0' + string;
+    };
+    return string;
+  };
+  
+  function printFarmInventory(cows, chickens, pigs) {
+    console.log(zeroPad(cows, 3) + " Cows");
+    console.log(zeroPad(chickens, 3) + " Chickens")
+    console.log(zeroPad(pigs, 3) + " Pigs")
+  };
+  printFarmInventory(7, 16, 3);
+
+
+  // Summary
+  // -------
+
+  // Create a function value f
+  var f = function(a) {
+    console.log(a + 2);
+  };
+
+  // Declare g to be a function
+  function g(a, b) {
+    return a * b * 3.5;
+  };
+
+
+  // ========= //
+  // EXERCISES //
+  // ========= //
+
+
+  // Write a function 'min' that takes two arguments and returns their minimum.
+  var min = function(x, y) {
+    return Math.min(x, y);
+  };
+  console.log(min(0, 10));  // ->  10
+  console.log(min(0, -10)); // -> -10
+
+
+  // Define a recursive function that checks if a number is even
+  var isEven = function(number) {
+    if (number == 0) {
+      return true;
+    } else if (number == 1) {
+      return false;
+    } else if (number < 0) {
+      return isEven(-number);
+    } else {
+      return isEven(number - 2);
+    }
+  };
+  console.log(isEven(50));
+  console.log(isEven(75));
+  console.log(isEven(-1));
+
+
+  // Write a function that takes a string as an argument and returns a number
+  // that indicates how many "B" characters are in the string.
+  var countBs = function(string) {
+    counter = 0;
+    for (var i = 0; i < string.length; i += 1) {
+      if (string[i] == 'B') {
+        counter += 1;
+      }
+    };
+    return counter;
+  };
+  console.log(countBs('BBC')); // -> 2
+
+
+  // Write a function countChar that behaves like 'countBs', but takes 2 
+  // arguments, one for the string and one for the character to find.
+  var countChar = function(string, char) {
+    counter = 0;
+    for (var i = 0; i < string.length; i += 1) {
+      if (string[i] == char) {
+        counter += 1;
+      }
+    };
+    return counter;
+  };
+  console.log(countChar('kakkerlak', 'k'));
+
+
+
+</script>
+</body>
+</html>
