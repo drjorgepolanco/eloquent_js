@@ -410,7 +410,72 @@
   // 'Math.ceil()'   rounds up to a whole number.
   // 'Math.round()'  rounds to the nearest whole number.
 
+  // --------------------------------------------------------------------------
   
+  // The Global Object
+  // -----------------
+  // The global scope can also be approached as an object in Javascript.
+  var myVar = 10;
+  console.log('myVar' in window);            // → true
+  console.log(window.myVar);                 // → 10
+
+  // --------------------------------------------------------------------------
+
+  // ========= //
+  // EXERCISES //
+  // ========= //
+
+  // The Sum of a Range
+  // ------------------
+
+  // Write a function that takes two arguments, 'start' and 'end', and returns an 
+  // array containing all the numbers from 'start' up to (and including) 'end'.
+  function range(start, end) {
+    var myArray = [];
+    for (var i = start; i <= end; i += 1) {
+      myArray.push(i);
+    }
+    return myArray;
+  };
+  console.log(range(4, 12));                 // → [4, 5, 6, 7, 8, 9, 10, 11, 12]
+  
+
+  // Write a sum function that takes an array of numbers and returns the sum of 
+  // these numbers.
+  var newArray = range(1, 10);
+
+  function sum(array) {
+    var total = 0;
+    for (var i = 0; i < array.length; i += 1) {
+      total += array[i];
+    }
+    return total;
+  };
+  console.log(sum(newArray));                // → 55
+
+
+  // Write a range function that takes an optional third argument that indicates
+  // the 'step' value used to build the array, and that accepts positive and 
+  // negative steps. If no step is given default to 1.
+  function otherRange(start, end, step) {
+    otherArray = [];
+    if (step == undefined) {
+      step = 1;
+    };
+    if (step > 0) {
+      for (var i = start; i <= end; i += step) {
+        otherArray.push(i);
+      }
+    } else {
+      for (var i = start; i >= end; i += step) {
+        otherArray.push(i);
+      }
+    };
+    return otherArray;
+  };
+  console.log(otherRange(10, 0, -2));        // → [10, 8, 6, 4, 2, 0]
+  console.log(otherRange(10, 15));           // → [10, 11, 12, 13, 14, 15]
+  console.log(otherRange(10, 20, 2));        // → [10, 12, 14, 16, 18, 20]
 
 </script>
 </body>
