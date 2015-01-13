@@ -357,7 +357,34 @@
   // 'charAt'        access individual characters.
   console.log(string.charAt(1));             // → b
 
+  // --------------------------------------------------------------------------
   
+  // The Arguments Object
+  // --------------------
+  // In Javascript you are allowed to pass more (or fewer) arguments to a function
+  // than the number of parameters the function itself declares.
+
+  function noArguments() {}
+  noArguments(1, 2, 3);                      // → This is okay
+  function threeArguments(a, b, c) {}
+  threeArguments();                          // → And so is this
+
+  // Every time a function is called, a special variable named 'arguments' is
+  // added to the environment in which the function body runs.
+  function argumentCounter() {
+    console.log("You gave me", arguments.length, 'arguments.');
+  };
+  argumentCounter('Straw man', 'Tautology', 'Ad hominem');
+  // → You gave me 3 arguments.
+
+  function addEntry(squirrel) {
+    var entry = {events: [], squirrel: squirrel};
+    for (var i = 1; i < arguments.length; i += 1) {
+      entry.events.push(arguments[i]);
+    }
+    journal.push(entry);
+  }
+  addEntry(true, 'work', 'touched tree', 'pizza', 'running', 'tv');
 
 </script>
 </body>
