@@ -1,0 +1,72 @@
+<html>
+<head>
+  <title>Data Structures</title>
+</head>
+<body>
+<script type="text/javascript">
+
+
+  // DATA STRUCTURES: OBJECTS AND ARRAYS
+  // ===================================
+
+
+  // Methods
+  // -------
+  var doh = 'Doh';
+  console.log(typeof doh.toUpperCase);       // -> function
+  console.log(typeof doh.toUpperCase());     // -> string
+  consolelog(doh.toUpperCase());             // -> DOH
+
+  // array methods
+  var mack = [];
+  mack.push('Mack');
+  mack.push('the', 'Knife');
+  console.log(mack);                         // -> ["Mack", "the", "Knife"]
+  console.log(mack.join(" "));               // -> Mack the Knife
+  mack.join(" ");                            // -> "Mack the Knife"
+  console.log(mack.pop());                   // -> Knife
+  console.log(mack);
+
+
+  // Objects
+  // -------
+
+  var day1 = {
+    squirrel: false,
+    events: ['work', 'touched tree', 'pizza', 'running', 'tv']
+  };
+  console.log(day1.squirrel);                // -> false
+  console.log(day1.wolf);                    // -> undefined
+  day1.wolf = false;
+  console.log(day1.wolf);                    // -> false
+
+  // Properties whose names are not valid variable names or valid numbers have
+  // to be quoted
+  var descriptions = {
+    work: 'Went to work',
+    'touched tree': 'touched a tree'
+  };
+  console.log(descriptions['touched tree']); // -> touched a tree
+
+  // The 'delete' Operator
+  // It's a unary operator that, when applied to a property access expression,
+  // will remove the named property from the object.
+  var anObject = {left: 1, right: 2};
+  console.log(anObject.left);                // -> 1
+  anObject.left = undefined;
+  anObject                                   // -> Object {left: undefined, right: 2}
+  console.log('left' in anObject);           // -> true
+  delete anObject.left;
+  console.log(anObject.left);                // -> undefined
+  console.log('left' in anObject);           // -> false
+  console.log('right' in anObject);          // -> true
+  // The difference between setting a property to 'undefined' and actually
+  // deleting it is that in the first case, the object still 'has' the
+  // property (true), whereas in the second case the property is no longer
+  // present (false). 
+
+
+
+</script>
+</body>
+</html>
