@@ -15,18 +15,18 @@
   // Methods
   // -------
   var doh = 'Doh';
-  console.log(typeof doh.toUpperCase);       // -> function
-  console.log(typeof doh.toUpperCase());     // -> string
-  console.log(doh.toUpperCase());             // -> DOH
+  console.log(typeof doh.toUpperCase);       // → function
+  console.log(typeof doh.toUpperCase());     // → string
+  console.log(doh.toUpperCase());            // → DOH
 
   // array methods
   var mack = [];
   mack.push('Mack');
   mack.push('the', 'Knife');
-  console.log(mack);                         // -> ["Mack", "the", "Knife"]
-  console.log(mack.join(" "));               // -> Mack the Knife
-  mack.join(" ");                            // -> "Mack the Knife"
-  console.log(mack.pop());                   // -> Knife
+  console.log(mack);                         // → ["Mack", "the", "Knife"]
+  console.log(mack.join(" "));               // → Mack the Knife
+  mack.join(" ");                            // → "Mack the Knife"
+  console.log(mack.pop());                   // → Knife
   console.log(mack);
 
   // --------------------------------------------------------------------------
@@ -38,10 +38,10 @@
     squirrel: false,
     events: ['work', 'touched tree', 'pizza', 'running', 'tv']
   };
-  console.log(day1.squirrel);                // -> false
-  console.log(day1.wolf);                    // -> undefined
+  console.log(day1.squirrel);                // → false
+  console.log(day1.wolf);                    // → undefined
   day1.wolf = false;
-  console.log(day1.wolf);                    // -> false
+  console.log(day1.wolf);                    // → false
 
   // Properties whose names are not valid variable names or valid numbers have
   // to be quoted
@@ -49,20 +49,20 @@
     work: 'Went to work',
     'touched tree': 'touched a tree'
   };
-  console.log(descriptions['touched tree']); // -> touched a tree
+  console.log(descriptions['touched tree']); // → touched a tree
 
   // The 'delete' Operator
   // It's a unary operator that, when applied to a property access expression,
   // will remove the named property from the object.
   var anObject = {left: 1, right: 2};
-  console.log(anObject.left);                // -> 1
+  console.log(anObject.left);                // → 1
   anObject.left = undefined;
-  anObject                                   // -> Object {left: undefined, right: 2}
-  console.log('left' in anObject);           // -> true
+  anObject                                   // → Object {left: undefined, right: 2}
+  console.log('left' in anObject);           // → true
   delete anObject.left;
-  console.log(anObject.left);                // -> undefined
-  console.log('left' in anObject);           // -> false
-  console.log('right' in anObject);          // -> true
+  console.log(anObject.left);                // → undefined
+  console.log('left' in anObject);           // → false
+  console.log('right' in anObject);          // → true
   // The difference between setting a property to 'undefined' and actually
   // deleting it is that in the first case, the object still 'has' the
   // property (true), whereas in the second case the property is no longer
@@ -97,12 +97,12 @@
   var object2 = object1;
   var object3 = {value: 10};
 
-  console.log(object1 == object2);           // -> true
-  console.log(object1 == object3);           // -> false
+  console.log(object1 == object2);           // → true
+  console.log(object1 == object3);           // → false
 
   object1.value = 15;
-  console.log(object2.value);                // -> 15
-  console.log(object3.value);                // -> 10
+  console.log(object2.value);                // → 15
+  console.log(object3.value);                // → 10
 
   // --------------------------------------------------------------------------
 
@@ -156,7 +156,7 @@
                 (table[1] + table[3]) *
                 (table[0] + table[2]));
   };
-  console.log(phi(table));                   // -> 0.06859943405700354
+  console.log(phi(table));                   // → 0.06859943405700354
 
 
   // To extract a two-by-two table for a specific event from this journal, 
@@ -187,7 +187,7 @@
     }
     return table;
   };
-  console.log(tableFor('pizza', JOURNAL));   // -> [76, 9, 4, 1]
+  console.log(tableFor('pizza', JOURNAL));   // → [76, 9, 4, 1]
 
   // --------------------------------------------------------------------------
   
@@ -208,8 +208,8 @@
   }
   storePhi('pizza', 0.069);
   storePhi('touched tree', -0.081);
-  console.log('pizza' in map);               // -> true
-  console.log(map['touched tree']);          // -> 0.081
+  console.log('pizza' in map);               // → true
+  console.log(map['touched tree']);          // → 0.081
 
   // A map is a way to go from values in one domain (in this case, event names) 
   // to corresponding values in another domain (in this case, ϕ coefficients).
@@ -248,17 +248,17 @@
   for (var event in correlations) {
     console.log(event + ": " + correlations[event]);
   };
-  // carrot: 0.014097096860865023
-  // exercise: 0.06859943405700354
-  // weekend: 0.13719886811400708
-  // bread: -0.07575540190785703
-  // pudding: -0.06482037235521644
-  // brushed teeth: -0.3805211953235953
-  // touched tree: -0.08084520834544433
-  // nachos: -0.07043451251197408
-  // cycling: -0.08084520834544433
-  // and so on...
-  
+  // → carrot:         0.0140970968
+  // → exercise:       0.0685994340
+  // → weekend:        0.1371988681
+  // → bread:         -0.0757554019
+  // → pudding:       -0.0648203723
+  // → brushed teeth: -0.3805211953
+  // → touched tree:  -0.0808452083
+  // → nachos:        -0.0704345125
+  // → cycling:       -0.0808452083
+  // → and so on...
+
 
   // Let's filter the results to show only correlations greater than 0.1 or
   // less than -0.1.
@@ -283,7 +283,7 @@
       entry.events.push('peanut teeth');
     }
   };
-  console.log(phi(tableFor('peanut teeth', JOURNAL))); // -> 1
+  console.log(phi(tableFor('peanut teeth', JOURNAL))); // → 1
   // Bingo! Jacques turns into a squirrel when he eats peanuts and fails to
   // brush his teeth!
 
