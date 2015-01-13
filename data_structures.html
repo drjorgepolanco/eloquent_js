@@ -286,6 +286,54 @@
   console.log(phi(tableFor('peanut teeth', JOURNAL))); // → 1
   // Bingo! Jacques turns into a squirrel when he eats peanuts and fails to
   // brush his teeth!
+  
+  // --------------------------------------------------------------------------
+
+  // Further Arraylogy
+  // -----------------
+
+  // Useful Array Methods
+
+  // 'push()'     adds an element at the end of an array.
+  // 'pop()'      removes the last element of an array.
+  // 'shift()'    removes the first element of an array.
+  // 'unshift(x)' adds x to the beginning of the array.
+  // 'unshift()'  returns the number of elements in the array.
+
+  var todoList = [];
+  function rememberTo(task) {
+    todoList.push(task);
+  };
+  function whatIsNext() {
+    return todoList.shift();
+  };
+  function urgentlyRememberTo(task) {
+    todoList.unshift(task);
+  };
+  
+  // 'indexOf()'     searches the array for the specified item, and returns its 
+  //                 position.
+  // 'lastIndexOf()' start searching for the given element at the end of the array.
+
+  // Both take an optional second argument that indicates where to start searching.
+  var ary = [1, 2, 3, 2, 1];
+  console.log(ary.indexOf(2));               // → 1
+  console.log(ary.indexOf(2, 2));            // → 3
+  console.log(ary.lastIndexOf(2));           // → 3
+
+  // 'slice()'       takes a start index and an end index and returns an array
+  //                 that has only the elements between those indices. The start
+  //                 index is inclusive and the end index exclusive.
+  console.log(ary.slice(2, 4));              // → [3, 2]
+  console.log(ary.slice(2));                 // → [3, 2, 1]
+
+  // 'concat()'      glue arrays together, similar to what the + operator does
+  //                 for strings.
+  function remove(array, index) {
+    return array.slice(0, index).concat(array.slice(index + 1));
+  };
+  console.log(remove(['a', 'b', 'c', 'd', 'e', 'f', 'g'], 2));
+  // → ['a', 'b', 'd', 'e']
 
 </script>
 </body>
