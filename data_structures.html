@@ -3,19 +3,21 @@
   <title>Data Structures</title>
 </head>
 <body>
+<script src="jacques_journal.js"></script>
 <script type="text/javascript">
 
 
   // DATA STRUCTURES: OBJECTS AND ARRAYS
   // ===================================
-
+  
+  // --------------------------------------------------------------------------
 
   // Methods
   // -------
   var doh = 'Doh';
   console.log(typeof doh.toUpperCase);       // -> function
   console.log(typeof doh.toUpperCase());     // -> string
-  consolelog(doh.toUpperCase());             // -> DOH
+  console.log(doh.toUpperCase());             // -> DOH
 
   // array methods
   var mack = [];
@@ -27,6 +29,7 @@
   console.log(mack.pop());                   // -> Knife
   console.log(mack);
 
+  // --------------------------------------------------------------------------
 
   // Objects
   // -------
@@ -63,9 +66,226 @@
   // The difference between setting a property to 'undefined' and actually
   // deleting it is that in the first case, the object still 'has' the
   // property (true), whereas in the second case the property is no longer
-  // present (false). 
+  // present (false).
 
 
+  // Array of Objects
+  var journal = [
+    {
+      events: ['work', 'touched tree', 'pizza', 'running', 'tv'],
+      squirrel: false
+    },
+    {
+      events: ['work', 'ice cream', 'cauliflower', 'lasagna', 'touched tree', 'brushed teeth'],
+      squirrel: false
+    },
+    {
+      events: ['weekend', 'cycling', 'break', 'peanuts', 'beer'],
+      squirrel: true
+    }
+  ];
+
+  // --------------------------------------------------------------------------
+
+  // Mutability
+  // ----------
+  // With objects there is a difference between having two references to the
+  // same object and having two different objects that contain the same properties.
+  
+  // Comparing different objects will return false, even if they have identical contents.
+  var object1 = {value: 10};
+  var object2 = object1;
+  var object3 = {value: 10};
+
+  console.log(object1 == object2);           // -> true
+  console.log(object1 == object3);           // -> false
+
+  object1.value = 15;
+  console.log(object2.value);                // -> 15
+  console.log(object3.value);                // -> 10
+
+  // --------------------------------------------------------------------------
+
+  // The Lycanthrope's log
+  var journal = [];
+  function addEntry(events, didITurnIntoASquirrel) {
+    journal.push({
+      events: events,
+      squirrel: didITurnIntoASquirrel
+    });
+  };
+
+  addEntry(['work', 'touched tree', 'pizza', 'running', 'tv'], false);
+  addEntry(['work', 'ice cream', 'cauliflower', 'lasagna', 'touched tree', 'brushed teeth'], false);
+  addEntry(['weekend', 'cycling', 'break', 'peanuts', 'beer'], true);
+
+  // --------------------------------------------------------------------------
+  
+  /*
+  Correlation:
+  ------------
+    Is a measure of dependence between variables (in the statistical sense).
+    It's expressed as a coefficient that ranges from -1 to 1:
+    -1 (perfectly opposites) 
+     0 (not related)
+     1 (perfectly related)
+
+  For binary (Boolean) variables, the phi coefficient (ϕ) provides a good 
+  measure of correlation. To compute ϕ, we need a table n that contains the 
+  number of times the various combinations of the two variables were observed.
+
+  Formula of phi coefficient (ϕ):
+  -------------------------------
+
+              n11•n00 - n10•n01
+        ϕ = ----------------------
+            Math.sqrt(n1•n0•n1•n0)
+  */
+ 
+  // Computing Correlation
+  // ---------------------
+  // We'll represent a two-by-two table in Javascript with a four-element array:
+  
+  var table = [76, 9, 4, 1];
+
+  // The function that computes the ϕ coefficient from such an array:
+  function phi(table) {
+    return (table[3] * table[0] - table[2] * table[1]) /
+      Math.sqrt((table[2] + table[3]) *
+                (table[0] + table[1]) *
+                (table[1] + table[3]) *
+                (table[0] + table[2]));
+  };
+  console.log(phi(table));                   // -> 0.06859943405700354
+
+
+  // To extract a two-by-two table for a specific event from this journal, 
+  // we must loop over all the entries and tally up how many times the event 
+  // occurs in relation to squirrel transformations.
+  
+
+  // hasEvent() tests whether an entry contains a given event:
+  function hasEvent(event, entry) {
+    return entry.events.indexOf(event) != -1;
+  };    
+  // indexOf() tries to find a given value (in this case, the event name) in the 
+  // array and returns the index at which it was found or -1 if it wasn’t found.
+  
+
+  // tableFor() figures out which box in the table each journal entry falls into 
+  // by checking whether the entry contains the specific event it’s interested 
+  // in and whether the event happens alongside a squirrel incident.
+  // The loop then adds one to the number in the array that corresponds to this 
+  // box on the table
+  function tableFor(event, journal) {
+    var table = [0, 0, 0, 0];
+    for (var i = 0; i < journal.length; i += 1) {
+      var entry = journal[i], index = 0;
+      if (hasEvent(event, entry)) index += 1;
+      if (entry.squirrel) index += 2;
+      table[index] += 1;
+    }
+    return table;
+  };
+  console.log(tableFor('pizza', JOURNAL));   // -> [76, 9, 4, 1]
+
+  // --------------------------------------------------------------------------
+  
+  // Objects as Maps
+  // ---------------
+  // How should we store these correlations once we compute them?
+
+  // Option A (Not Good)
+  // Store all correlations in an array, using objects with name and value 
+  // properties. (cumbersome). We'll need to loop through the whole array to
+  // find the object with the right name.
+
+  // Option B (Better)
+  // Use object properties named after the event types.
+  var map = {};
+  function storePhi(event, phi) {
+    map[event] = phi;
+  }
+  storePhi('pizza', 0.069);
+  storePhi('touched tree', -0.081);
+  console.log('pizza' in map);               // -> true
+  console.log(map['touched tree']);          // -> 0.081
+
+  // A map is a way to go from values in one domain (in this case, event names) 
+  // to corresponding values in another domain (in this case, ϕ coefficients).
+
+  // Looping through Objects:
+  // ------------------------
+  for (var event in map) {
+    console.log('The correlation for "' + event + '" is ' + map[event]);
+  }
+  // → The correlation for 'pizza' is 0.069
+  // → The correlation for 'touched tree' is -0.081
+
+  // --------------------------------------------------------------------------
+  
+  // The Final Analysis
+  // ------------------
+  // To find all the types of events that are present in the data set, we simply 
+  // process each entry in turn and then loop over the events in that entry.
+  function gatherCorrelations(journal) {
+    var phis = {};
+    for (var entry = 0; entry < journal.length; entry += 1) {
+      var events = journal[entry].events;
+      for (var i = 0; i < events.length; i += 1) {
+        var event = events[i];
+        if (!(event in phis)) {
+          phis[event] = phi(tableFor(event, journal));
+        }
+      }
+    }
+    return phis;
+  }
+  var correlations = gatherCorrelations(JOURNAL);
+  console.log(correlations.pizza);           // → 0.068599434
+
+  // Let's see the correlations:
+  for (var event in correlations) {
+    console.log(event + ": " + correlations[event]);
+  };
+  // carrot: 0.014097096860865023
+  // exercise: 0.06859943405700354
+  // weekend: 0.13719886811400708
+  // bread: -0.07575540190785703
+  // pudding: -0.06482037235521644
+  // brushed teeth: -0.3805211953235953
+  // touched tree: -0.08084520834544433
+  // nachos: -0.07043451251197408
+  // cycling: -0.08084520834544433
+  // and so on...
+  
+
+  // Let's filter the results to show only correlations greater than 0.1 or
+  // less than -0.1.
+  for (var event in correlations) {
+    var correlation = correlations[event];
+    if (correlation > 0.1 || correlation < -0.1) {
+      console.log(event + ": " + correlation);
+    }
+  };
+  // → weekend:        0.1371988681
+  // → brushed teeth: -0.3805211953
+  // → candy:          0.1296407447
+  // → work:          -0.1371988681
+  // → spaghetti:      0.2425356250
+  // → reading:        0.1106828054
+  // → peanuts:        0.5902679812
+
+  // The two critical factors are brushing his teeth and eating peanuts:
+  for (var i = 0; i < JOURNAL.length; i += 1) {
+    var entry = JOURNAL[i];
+    if (hasEvent('peanuts', entry) && !hasEvent('brushed teeth', entry)) {
+      entry.events.push('peanut teeth');
+    }
+  };
+  console.log(phi(tableFor('peanut teeth', JOURNAL))); // -> 1
+  // Bingo! Jacques turns into a squirrel when he eats peanuts and fails to
+  // brush his teeth!
 
 </script>
 </body>
