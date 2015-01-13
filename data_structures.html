@@ -294,11 +294,11 @@
 
   // Useful Array Methods
 
-  // 'push()'     adds an element at the end of an array.
-  // 'pop()'      removes the last element of an array.
-  // 'shift()'    removes the first element of an array.
-  // 'unshift(x)' adds x to the beginning of the array.
-  // 'unshift()'  returns the number of elements in the array.
+  // 'push()'        adds an element at the end of an array.
+  // 'pop()'         removes the last element of an array.
+  // 'shift()'       removes the first element of an array.
+  // 'unshift(x)'    adds x to the beginning of the array.
+  // 'unshift()'     returns the number of elements in the array.
 
   var todoList = [];
   function rememberTo(task) {
@@ -334,6 +334,30 @@
   };
   console.log(remove(['a', 'b', 'c', 'd', 'e', 'f', 'g'], 2));
   // → ['a', 'b', 'd', 'e']
+
+  // --------------------------------------------------------------------------
+  
+  // Strings and their Properties
+  // ----------------------------
+
+  // If you add a new property to a String, it doesn't stick
+  var myString = "Fido";
+  myString.myProperty = "value";
+  console.log(myString.myProperty);          // → undefined
+
+  // 'slice' and 'indexOf'
+  console.log('coconuts'.slice(4, 7));       // → nut
+  console.log('coconut'.indexOf('u'));       // → 5
+  console.log('one two four'.indexOf('ou')); // → 9
+  
+  // 'trim'          removes whitespaces (spaces, newlines, tabs, and similar
+  //                 characters) from the start and end of a string.
+  console.log("   okay \n".trim());          // → okay
+
+  // 'charAt'        access individual characters.
+  console.log(string.charAt(1));             // → b
+
+  
 
 </script>
 </body>
