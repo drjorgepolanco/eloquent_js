@@ -1,0 +1,272 @@
+<html>
+<head>
+  <title>Higher Order Functions</title>
+</head>
+<body>
+<script src="ancestry_file.js"></script>
+<script type="text/javascript">
+
+
+  // HIGHER ORDER FUNCTIONS
+  // ======================
+
+
+  // Abstraction
+  // -----------
+
+  // Take a look at the following program (6 lines):
+  var total = 0; count = 1;
+  while (count <= 10) {
+    total += count;
+    count += 1;
+  };
+  console.log(total)
+  
+  // Same program (1 line):
+  // console.log(reduce(range(1, 10)));
+
+  
+  // Plain functions are good way to build abstractions, but sometimes they fall short.
+
+  
+  // this type of for loops made several appearances in Data Structures.
+  var array = [1, 2, 3];
+  for (var i = 0; i < array.length; i ++) {
+    var current = array[i];
+    console.log(current);
+  };
+
+  // Let's abstract it into a function
+  function logEach(array) {
+    for (var i = 0; i < array.length; i += 1) {
+      console.log(array[i]);
+    }
+  };
+  logEach(['a', 'b', 'c']);
+  // → a
+  // → b
+  // → c
+  
+  // What if we want to do something other that logging the elements?
+  function forEach(array, action) {
+    for (var i = 0; i < array.length; i += 1) {
+      action(array[i]);
+    }
+  };
+  forEach(['animal', 'con', 'ropa'], console.log.bind(console));
+  // 'console.log' → Uncaught TypeError: Illegal invocation (Chrome)
+  // 'alert' works as is, without bind(console)
+  
+
+  // Often, you don’t pass a predefined function to forEach but create a function 
+  // value on the spot instead.
+  var numbers = [1, 2, 3, 4, 5];
+  var sum = 0;
+  forEach(numbers, function(number) {
+    sum += number;
+  });
+  console.log(sum);                  // → 15
+
+  // forEach is available as a standard method on arrays. It takes a single
+  // argument, the function to be executed for each element:
+
+  // Let's take a look a this example from the previous chapter...
+
+  // Without forEach
+  function gatherCorrelations(journal) {
+    var phis = {};
+    for (var entry = 0; entry < journal.length; entry += 1) {
+      var events = journal[entry].events;
+      for (var i = 0; i < events.length; i += 1) {
+        var event = events[i];
+        if (!(event in phis)) {
+          phis[event] = phi(tableFor(event, journal));
+        }
+      }
+    }
+    return phis;
+  };
+
+  // With forEach
+  function gatherCorrelations(journal) {
+    var phis = {};
+    journal.forEach(function(entry) {
+      entry.events.forEach(function(event) {
+        if (!(event in phis)) {
+          phis[event] = phi(tableFor(event, journal));
+        }
+      });
+    });
+    return phis;
+  };
+
+  // --------------------------------------------------------------------------
+
+  // Higher-Order Functions
+  // ----------------------
+  // these are functions that operate on other functions, either by taking them
+  // as arguments or by returning them.
+
+  // Functions that create new functions:
+  function greaterThan(n) {
+    return function(m) {
+      return m > n;
+    }
+  };
+  var greaterThan10 = greaterThan(10);
+  console.log(greaterThan10(11));    // → true
+
+  // Functions that change other functions:
+  function noisy(f) {
+    return function(arg) {
+      console.log('calling with', arg);
+      var val = f(arg);
+      console.log('called with', arg, '- got', val);
+      return val;
+    };
+  };
+  noisy(Boolean)(0);
+  // → calling with 0
+  // → called with 0 - got false
+
+  // Functions that provide new types of control flow:
+  function unless(test, then) {
+    if (!test) then();
+  };
+  function repeat(times, body) {
+    for (var i = 0; i < times; i += 1) {
+      body(i);
+    }
+  };
+  repeat(3, function(n) {
+    unless(n % 2, function() {
+      console.log(n, 'is even');
+    });
+  });
+  // → 0 is even
+  // → 2 is even
+
+  // --------------------------------------------------------------------------
+
+  // Passing along Arguments
+  // -----------------------
+
+  // When you don't know how many arguments you'll need to pass, Javascript 
+  // functions have an 'apply' method. You can pass it an array of arguments,
+  // and it will call the function with those arguments.
+  function transparentWrapping(f) {
+    return function() {
+      return f.apply(null, arguments);
+    };
+  };
+  // the function it returns passes all of the given arguments, and only those to f.
+
+  // --------------------------------------------------------------------------
+
+  // JSON: Javascript Object Notation
+  // --------------------------------
+
+  // - All property names have to be surrounded by double quotes
+  // - Only simple data expressions are allowed—no function calls, variables, or 
+  //   anything that involves actual computation. 
+  // - Comments are not allowed in JSON.
+
+  // Functions:
+  // ---------
+  // JSON.stringify: takes a JavaScript value and returns a JSON-encoded string.
+  // JSON.parse:     takes such a string and converts it to the value it encodes.
+  var string = JSON.stringify({name: "X", born: 1980});
+  console.log(string);                             // → {"name":"X","born":1980}
+  console.log(JSON.parse(string).born);            // → 1980
+
+  var ancestry = JSON.parse(ANCESTRY_FILE);
+  console.log(ancestry.length);                    // → 39
+
+  // --------------------------------------------------------------------------
+
+  // Filtering an Array
+  // ------------------
+
+  // To find the people in 'ancestry' who were young in 1924:
+  function filter(array, test) {
+    var passed = [];
+    for (var i = 0; i < array.length; i += 1) {
+      if (test(array[i])) {
+        passed.push(array[i]);
+      }
+    }
+    return passed;
+  };
+  console.log(filter(ancestry, function(person) {
+    return person.born > 1900 && person.born < 1925;
+  }));  // → [{name: "Philibert Haverbeke", …}, …]
+
+  // This uses the argument named 'test', a function value, to fill in a “gap” 
+  // in the computation. The test function is called for each element, and its 
+  // return value determines whether an element is included in the returned array.
+
+  // Note how 'filter' rather than deleting elements from the existing array,
+  // builds up a new array with only the elements that pass the test.
+
+  // This function is 'pure', it does not modify the array it is given.
+
+  // Like 'forEach', 'filter' is also a standard method on arrays.
+  console.log(ancestry.filter(function(person) {
+    return person.father == "Carel Haverbeke";
+  }));  // → [{name: "Carolus Haverbeke", …}]
+
+  // --------------------------------------------------------------------------
+
+  // Transforming with Map
+  // ---------------------
+
+  // map: transforms an array by applying a function to all of its elements and
+  //      building a new array from the returned values. Both will have same length.
+  function map(array, transform) {
+    var mapped = [];
+    for (var i = 0; i < array.length; i += 1) {
+      mapped.push(transform(array[i]));
+    }
+    return mapped;
+  };
+
+  var overNinety = ancestry.filter(function(person) {
+    return person.died - person.born > 90;
+  });
+  console.log(map(overNinety, function(person) {
+    return person.name;
+  }));
+  // → ["Clara Aernoudts", "Emile Haverbeke", "Maria Haverbeke"]
+
+  // --------------------------------------------------------------------------
+
+  // Summarizing with Reduce
+  // -----------------------
+  
+  // Used to compute a single value on each item of the array.
+  // When summing numbers, you’d start with the number zero and, for each element, 
+  // combine it with the current sum by adding the two.
+  function reduce(array, combine, start) {
+    var current = start;
+    for (var i = 0; i < array.length; i += 1) {
+      current = combine(current, array[i]);
+    }
+    return current;
+  };
+  console.log(reduce([1, 2, 3, 4], function(a, b) {
+    return a + b;
+  }, 0));  // → 10
+
+  // To find my most ancient known ancestor using 'reduce':
+  console.log(ancestry.reduce(function(min, cur) {
+    if (cur.born < min.born) {
+      return cur;
+    } else {
+      return min;
+    }
+  }));     // → {name: "Pauwels van Haverbeke", born: 1535, …}
+
+
+</script>
+</body>
+</html>
