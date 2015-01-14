@@ -572,13 +572,18 @@
   // they are the same value or are objects with the same properties whose values
   // are also equal when compared with a recursive call to deepEqual.
   function deepEqual(x, y) {
+    // true if x is exactly equal to y
     if (x === y) {
       return true;
     }
+    // they both have to be objects, but can not be null, because null is also
+    // an object.
     if (x == null || typeof x != 'object' || y == null || typeof y != 'object') {
       return false
     }
-    
+    // we don't know how many properties each object has, so we first set them
+    // to zero and the count them to check if they have the same amount of 
+    // properties.
     var propertiesInX = 0;
     var propertiesInY = 0;
 
@@ -592,6 +597,7 @@
         return false;
       }
     };
+    // true if the properties in x are the same as the properties in y.
     return propertiesInX == propertiesInY;
   };
   var obj = {here: {is: "an"}, object: 2};
