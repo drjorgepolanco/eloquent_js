@@ -425,8 +425,8 @@
   // EXERCISES //
   // ========= //
 
-  // The Sum of a Range
-  // ------------------
+  // 1. The Sum of a Range
+  //    ------------------
 
   // Write a function that takes two arguments, 'start' and 'end', and returns an 
   // array containing all the numbers from 'start' up to (and including) 'end'.
@@ -476,6 +476,38 @@
   console.log(otherRange(10, 0, -2));        // → [10, 8, 6, 4, 2, 0]
   console.log(otherRange(10, 15));           // → [10, 11, 12, 13, 14, 15]
   console.log(otherRange(10, 20, 2));        // → [10, 12, 14, 16, 18, 20]
+
+  
+  // 2. Reversing an Array
+  //    ------------------
+
+  var theArray = ['a', 'b', 'c', 'd', 'e', 'f'];
+
+  // Write a function 'reverseArray' that takes an array as argument and produces
+  // a new array with the same elements in reverse order, leaving the given array
+  // intact.
+  function reverseArray(array) {
+    var newArray = [];
+    for (var i = array.length - 1; i >= 0; i -= 1) {
+      newArray.push(array[i]);
+    }
+    return newArray;
+  };
+  console.log(reverseArray(theArray));       // → ["f", "e", "d", "c", "b", "a"]
+  console.log(theArray);                     // → ["a", "b", "c", "d", "e", "f"]
+
+
+  // Write a function 'reverseArrayInPlace' that modifies the array given as
+  // argument in order to reverse it's elements.
+  function reverseArrayInPlace(array) {
+    for (var i = array.length - 1; i >= 0; i -= 1) {
+      array.push(array[i]);
+    }
+    array.splice(0, array.length / 2);
+    return array;
+  };
+  reverseArrayInPlace(theArray);
+  console.log(theArray);                     // → ["f", "e", "d", "c", "b", "a"]
 
 </script>
 </body>
