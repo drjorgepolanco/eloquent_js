@@ -563,7 +563,45 @@
   };
   console.log(nth(arrayToList([10, 20, 30]), 1));
   // → 20
-  
+
+
+  // 4. Deep Comparison
+  //    ---------------
+
+  // Write a function deepEqual that takes two values and returns true only if
+  // they are the same value or are objects with the same properties whose values
+  // are also equal when compared with a recursive call to deepEqual.
+  function deepEqual(x, y) {
+    if (x === y) {
+      return true;
+    }
+    if (x == null || typeof x != 'object' || y == null || typeof y != 'object') {
+      return false
+    }
+    
+    var propertiesInX = 0;
+    var propertiesInY = 0;
+
+    for (var property in x) {
+      propertiesInX += 1;
+    };
+    
+    for (var property in y) {
+      propertiesInY += 1;
+      if (!(property in x) || !deepEqual(x[property], y[property])) {
+        return false;
+      }
+    };
+    return propertiesInX == propertiesInY;
+  };
+  var obj = {here: {is: "an"}, object: 2};
+  console.log(deepEqual(obj, obj));
+  // → true
+  console.log(deepEqual(obj, {here: 1, object: 2}));
+  // → false
+  console.log(deepEqual(obj, {here: {is: "an"}, object: 2}));
+  // → true
+
 </script>
 </body>
 </html>
