@@ -364,7 +364,8 @@
       return fromMother + fromFather + (thisOneCounts ? 1 : 0);
     }
     return reduceAncestors(person, combine, 0);
-  }
+  };
+  
   function longLivingPercentage(person) {
     var all = countAncestors(person, function(person) {
       return true;
@@ -505,7 +506,6 @@
   console.log(every([NaN, NaN, NaN], isNaN));        // → true
   console.log(every([NaN, NaN, 4], isNaN));          // → false
 
-
   function some(array, predicate) {
     for (var i = 0; i < array.length; i += 1) {
       if (predicate(array[i])) {
@@ -516,15 +516,6 @@
   };
   console.log(some([NaN, 3, 4], isNaN));             // → true
   console.log(some([2, 3, 4], isNaN));               // → false
-
-
-
-
-
-
-
-
-
 
 </script>
 </body>
