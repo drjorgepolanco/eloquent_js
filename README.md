@@ -10,7 +10,7 @@ Licensed under a [Creative Commons attribution-noncommercial license](http://cre
 3. [Functions](https://github.com/drjorgepolanco/eloquent_js/blob/master/functions.html)
 4. [Data Structures: Objects and Arrays](https://github.com/drjorgepolanco/eloquent_js/blob/master/data_structures.html)
 5. [Higher-order Functions](https://github.com/drjorgepolanco/eloquent_js/blob/master/higher_order_functions.html)
-6. [The Secret Life of Objects]()
+6. [The Secret Life of Objects](https://github.com/drjorgepolanco/eloquent_js/blob/master/the_secret_life_of_objects.html)
 7. [Project: Electronic Life]()
 8. [Bugs and Error Handling]()
 9. [Regular Expressions]()
