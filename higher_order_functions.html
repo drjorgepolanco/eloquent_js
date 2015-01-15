@@ -238,7 +238,11 @@
   // Summarizing with Reduce
   // -----------------------
   
-  // Used to compute a single value on each item of the array.
+  // reduce: applies a function against an accumulator and each value of the array 
+  //         (from left-to-right) has to reduce it to a single value. In other
+  //         words, condenses an array to a single value by repeatedly combining 
+  //         values, left to right.
+
   // When summing numbers, you’d start with the number zero and, for each element, 
   // combine it with the current sum by adding the two.
   function reduce(array, combine, start) {
@@ -260,6 +264,199 @@
       return min;
     }
   }));     // → {name: "Pauwels van Haverbeke", born: 1535, …}
+
+  // --------------------------------------------------------------------------
+  // Composability
+  // -------------
+
+  // The previous example without higher-order functions:
+  var min = ancestry[0];
+  for (var i = 1; i < ancestry.length; i += 1) {
+    var cur = ancestry[i];
+    if (cur.born < min.born) {
+      min = cur;
+    }
+  };
+  console.log(min);
+  // → {name: "Pauwels van Haverbeke", sex: "m", born: 1535, died: 1582, 
+  //   father: "N. van Haverbeke"…}
+
+  // Find the average age for men and women in ancestry.
+  function average(array) {
+    function plus(a, b) { return a + b; }
+    return array.reduce(plus) / array.length;
+  }
+  function age(p) { return p.died - p.born; }
+  function male(p) { return p.sex == "m"; }
+  function female(p) { return p.sex == "f"; }
+
+  console.log(average(ancestry.filter(male).map(age)));    // → 61.66666666
+  console.log(average(ancestry.filter(female).map(age)));  // → 54.55555555
+
+  // --------------------------------------------------------------------------
+  // The Cost
+  // --------
+  /*
+     If you have a loop inside a loop, the code inside the inner loop will end 
+     up running N×M times, where N is the number of times the outer loop repeats 
+     and M is the number of times the inner loop repeats within each iteration 
+     of the outer loop. If that inner loop contains another loop that makes P 
+     rounds, its body will run M×N×P times, and so on.
+  */
+
+  // --------------------------------------------------------------------------
+  // Great - Great - Great - Great - ...
+  // -----------------------------------
+  /*
+     I want to know if the most ancient person in ANCESTRY_FILE is my direct
+     ancestor. If he is, I would like to know how much DNA I theoretically share
+     with him.
+
+     To go from a parent's name to the actual object that represent this person, 
+     we first build up an object that associates names with people. 
+  */
+  var byName = {};
+  ancestry.forEach(function(person) {
+    byName[person.name] = person;
+  });
+  console.log(byName["Philibert Haverbeke"]);
+  // → {name: "Philibert Haverbeke", sex: "m", born: 1907, died: 1997, 
+  //   father: "Emile Haverbeke"…}
+
+  // Given a person, a function to combine values from the two parents of a
+  // given person, and a default value, reduceAncestors condenses avalue from a 
+  // family tree.
+  function reduceAncestors(person, f, defaultValue) {
+    // 'valueFor' handles a single person
+    function valueFor(person) {
+      if (person == null) {
+        return defaultValue;
+      } else {
+        return f(person, valueFor(byName[person.mother]), 
+                         valueFor(byName[person.father]));
+      }
+    }
+    return valueFor(person);
+  };
+  // Through the magic of recursion, it can simply call itself to handle the father 
+  // and the mother of this person. The results, along with the person object itself, 
+  // are passed to f, which returns the actual value for this person.
+
+  // We can then use this to compute the amount of DNA my grandfather shared with
+  // Pauwels van Haverbeke and divide that by four.
+
+  function sharedDNA(person, fromMother, fromFather) {
+    if (person.name == "Pauwels van Haverbeke") {
+      return 1;
+    } else {
+      return (fromMother + fromFather) / 2;
+    }
+  };
+  var ph = byName["Philibert Haverbeke"];
+  console.log(reduceAncestors(ph, sharedDNA, 0) / 4);    // → 0.00048828125
+
+
+  // The following code finds the percentage of known ancestors, for a given 
+  // person, who lived past 70:
+  function countAncestors(person, test) {
+    function combine(person, fromMother, fromFather) {
+      var thisOneCounts = test(person);
+      return fromMother + fromFather + (thisOneCounts ? 1 : 0);
+    }
+    return reduceAncestors(person, combine, 0);
+  }
+  function longLivingPercentage(person) {
+    var all = countAncestors(person, function(person) {
+      return true;
+    });
+    var longLiving = countAncestors(person, function(person) {
+      return (person.died - person.born) >= 70;
+    });
+    return longLiving / all;
+  };
+  console.log(longLivingPercentage(byName["Emile Haverbeke"]));
+  // → 0.1454545454
+
+  // --------------------------------------------------------------------------
+  // Binding
+  // -------
+
+  var theSet = ["Carel Haverbeke", "Maria van Brussel", "Donald Duck"];
+  function isInSet(set, person) {
+    return set.indexOf(person.name) > -1;
+  };
+  console.log(ancestry.filter(function(person) {
+    return isInSet(theSet, person);
+  }));
+
+  console.log(ancestry.filter(isInSet.bind(null, theSet)));
+  // The call to bind returns a function that will call isInSet with theSet as
+  // first argument, followed by any remaining arguments given to the bound function.
+  
+  // --------------------------------------------------------------------------
+  // Summary
+  // -------
+
+  // forEach: do something with each element in an array.
+  // filter:  build a new array with some elements filtered out.
+  // map:     build a new array where each element has been put through a function.
+  // reduce:  combine all an array's elements into a single value.
+
+  // apply:   used to call functions with an array specifying their arguments.
+  // bind:    used to create a partially applied version of the function.
+
+  // --------------------------------------------------------------------------
+
+  // ========= //
+  // EXERCISES //
+  // ========= //
+
+  // --------------------------------------------------------------------------
+  // 1. Flatenning
+  // -------------
+
+  // Use reduce in combination with concat to 'flatten' an array of arrays into
+  // a single array that has all the elements of the input arrays.
+  var arrays = [[1, 2, 3], [4, 5], [6]];
+  console.log(arrays.reduce(function(a, b) { return a.concat(b); }));
+  // → [1, 2, 3, 4, 5, 6]
+
+  // --------------------------------------------------------------------------
+  // 2. Mother-Child Age Difference
+  // ------------------------------
+
+  // Compute the average age difference between mothers and children (the age of 
+  // the mother when the child is born). You can use the average function. Not all 
+  // the mothers mentioned in the data are themselves present in the array.
+  function average(array) {
+    function plus(a, b) { return a + b; }
+    return array.reduce(plus) / array.length;
+  };
+  var byName = {};
+  ancestry.forEach(function(person) {
+    byName[person.name] = person;
+  });
+  var ageDifference = ancestry.filter(function(person) {
+    return byName[person.mother] != null;
+  }).map(function(person) {
+    return person.born - byName[person.mother].born;
+  });
+  console.log(average(ageDifference));
+  // → 31.22222222222222
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 </script>
