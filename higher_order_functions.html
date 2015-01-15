@@ -444,11 +444,78 @@
   console.log(average(ageDifference));
   // → 31.22222222222222
 
+  // --------------------------------------------------------------------------
+  // 3. Historical Life Expectancy
+  // -----------------------------
+
+  // Compute and output the average age of the people in the ancestry data set
+  // per century.
+  function average(array) {
+    function plus(a, b) { return a + b; }
+    return array.reduce(plus) / array.length;
+  };
+
+  function groupBy(array, groupOf) {
+    var groups = {};
+    for (var i = 0; i < array.length; i += 1) {
+      var item = array[i];
+      var group = groupOf(item);
+      if (group in groups) {
+        groups[group].push(item);
+      } else {
+        groups[group] = [item]
+      }
+    }
+    return groups;
+  };
+
+  var byCentury = groupBy(ancestry, function(person) {
+    return Math.ceil(person.died / 100);
+  });
+  for (var century in byCentury) {
+    var ages = byCentury[century].map(function(person) {
+      return person.died - person.born;
+    });
+    console.log(century + "th century: " + average(ages));
+  };
+  // → 16th century: 43.5
+  // → 17th century: 51.2
+  // → 18th century: 52.7
+  // → 19th century: 54.8
+  // → 20th century: 84.6
+  // → 21th century: 94
+
+  // --------------------------------------------------------------------------
+  // 4. Every and then Some
+  // ----------------------
+
+  // Write two functions 'every' and 'some', that behave like the standard array
+  // methods with the same name. every() returns true if all elements in the
+  // given array are true, and some() returns true as soon as it finds the first
+  // true element in the given array.
+
+  function every(array, predicate) {
+    for (var i = 0; i < array.length; i += 1) {
+      if (!predicate(array[i])) {
+        return false;
+      }
+    }
+    return true;
+  };
+  console.log(every([NaN, NaN, NaN], isNaN));        // → true
+  console.log(every([NaN, NaN, 4], isNaN));          // → false
 
 
-
-
-
+  function some(array, predicate) {
+    for (var i = 0; i < array.length; i += 1) {
+      if (predicate(array[i])) {
+        return true;
+      }
+    }
+    return false;
+  };
+  console.log(some([NaN, 3, 4], isNaN));             // → true
+  console.log(some([2, 3, 4], isNaN));               // → false
 
 
 
