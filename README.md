@@ -11,13 +11,13 @@ Licensed under a [Creative Commons attribution-noncommercial license](http://cre
 4. [Data Structures: Objects and Arrays](https://github.com/drjorgepolanco/eloquent_js/blob/master/data_structures.html)
 5. [Higher-order Functions](https://github.com/drjorgepolanco/eloquent_js/blob/master/higher_order_functions.html)
 6. [The Secret Life of Objects](https://github.com/drjorgepolanco/eloquent_js/blob/master/the_secret_life_of_objects.html)
-7. [Project: Electronic Life]()
-8. [Bugs and Error Handling]()
-9. [Regular Expressions]()
-10. [Modules]()
-11. [Project: A Programming Language]()
-12. [Javascript and the Browser]()
-13. [The Document Object Model]()
+7. Project: Electronic Life
+8. Bugs and Error Handling
+9. Regular Expressions
+10. Modules
+11. Project: A Programming Language
+12. Javascript and the Browser
+13. The Document Object Model
 14. Handling Events
 15. Project: A Platform Game
 16. Drawing on Canvas
@@ -29,5 +29,3 @@ Licensed under a [Creative Commons attribution-noncommercial license](http://cre
 
 ###About
 Each document or directory in this repository represents a Chapter of the book, identified with the same name. Not every single paragraph is represented but every relevant code is. Information left out of this workshop is because is too basic or simple pieces of theory.
-
-**Each chapter ends with exercises that I resolved by myself, sometimes reading hints or googling.**
